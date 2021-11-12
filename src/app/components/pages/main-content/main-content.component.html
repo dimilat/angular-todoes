@@ -3,7 +3,11 @@
     <h1>Todos list</h1>
   </div>
   <div class="p-2">
-    <button type="button" class="btn btn-outline-success" (click)="open()">
+    <button
+      type="button"
+      class="btn btn-outline-success"
+      (click)="openCreateModal()"
+    >
       Create todo
     </button>
   </div>
@@ -35,7 +39,11 @@
             <button type="button" class="btn btn-outline-primary btn-sm m-1">
               Edit
             </button>
-            <button type="button ml-2" class="btn btn-outline-danger btn-sm">
+            <button
+              type="button ml-2"
+              class="btn btn-outline-danger btn-sm"
+              (click)="deleteTodo(todo.id)"
+            >
               Delete
             </button>
           </small>
@@ -45,28 +53,19 @@
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<button
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#exampleModal"
->
-  Launch demo modal
-</button>
-
 <!-- Modal -->
 <div
   class="modal fade"
-  id="exampleModal"
+  id="createModal"
+  #createModal
   tabindex="-1"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="createModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create new todo</h5>
+        <h5 class="modal-title" id="createModalLabel">Create new todo</h5>
         <button
           type="button"
           class="btn-close"
@@ -74,7 +73,19 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">...</div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="todoFormControlTextarea" class="form-label"
+            >Todo description</label
+          >
+          <textarea
+            class="form-control"
+            id="todoFormControlTextarea"
+            [(ngModel)]="newTodo.title"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
       <div class="modal-footer">
         <button
           type="button"
@@ -83,7 +94,15 @@
         >
           Cancel
         </button>
-        <button type="button" class="btn btn-primary">Create</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          [disabled]="!newTodo?.title?.length"
+          (click)="createTodo()"
+        >
+          Create
+        </button>
       </div>
     </div>
   </div>
