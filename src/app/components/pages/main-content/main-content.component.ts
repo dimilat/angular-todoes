@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as bootstrap from 'bootstrap';
 import { Todo } from 'src/app/models/todo';
 import { ConfigService } from 'src/app/services/config.service';
 
@@ -22,5 +23,10 @@ export class MainContentComponent implements OnInit {
       .subscribe((data: Todo[]) =>
         this.todos = data
       );
+  }
+
+  open() {
+    var myModal = new bootstrap.Modal(<HTMLElement>document.getElementById("exampleModal"));
+    myModal.show();
   }
 }
