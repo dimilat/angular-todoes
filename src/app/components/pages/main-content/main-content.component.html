@@ -1,1 +1,38 @@
-<p>main-content works!</p>
+<div class="p-4">
+  <div class="mb-4">
+    <h1>Todos list</h1>
+    <button type="button" class="btn btn-outline-primary">Create todo</button>
+  </div>
+
+  <div class="list-group">
+    <a
+      *ngFor="let todo of todos"
+      class="list-group-item list-group-item-action"
+      aria-current="true"
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ todo.id }}</h5>
+        <small>
+          <i
+            *ngIf="!todo.completed; else uncompleted"
+            class="bi bi-check-circle-fill text-success"
+            >completed</i
+          >
+          <ng-template #uncompleted>
+            <i class="bi bi-circle text-secondary">not completed</i>
+          </ng-template>
+        </small>
+      </div>
+      <p class="mb-1">{{ todo.title }}</p>
+      <small>
+        <button type="button" class="btn btn-outline-primary btn-sm">
+          Edit
+        </button>
+
+        <button type="button ml-2" class="btn btn-outline-danger btn-sm">
+          Delete
+        </button>
+      </small>
+    </a>
+  </div>
+</div>
