@@ -7,28 +7,44 @@ import { Todo } from '../models/todo.model';
   providedIn: 'root'
 })
 export class ConfigService {
-  configUrl = 'https://instinctive-fork-snarl.glitch.me';
+  private configUrl = 'https://instinctive-fork-snarl.glitch.me';
 
   constructor(private http: HttpClient) { }
 
-  getTodos(): Observable<any> {
+  /**
+   *
+   *
+   * @return {*}  {Observable<Todo[]>}
+   * @memberof ConfigService
+   */
+  getTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>(this.configUrl + '/todos');
   }
 
-  deleteTodo(id: number): Observable<any> {
-    return this.http.delete<Todo>(this.configUrl + `/todos/${id}`);
+  /**
+   *
+   *
+   * @param {number} id
+   * @return {*}  {Observable<Todo>}
+   * @memberof ConfigService
+   */
+  deleteTodo(id: number): Observable<Todo> {
+    return this.http.delete<Todo>(`${this.configUrl}/todos/${id}`);
   }
 
-  createTodo(id: number, title: string, completed: boolean, editing: boolean): Observable<any> {
-    console.log({
-      id,
-      title,
-      completed,
-      editing
-    });
+  /**
+   *
+   *
+   * @param {number} id
+   * @param {string} title
+   * @param {boolean} completed
+   * @param {boolean} editing
+   * @return {*}  {Observable<Todo>}
+   * @memberof ConfigService
+   */
+  createTodo(title: string, completed: boolean, editing: boolean): Observable<Todo> {
     return this.http.post<Todo>(this.configUrl + '/todos',
       {
-        id,
         title,
         completed,
         editing
@@ -36,8 +52,27 @@ export class ConfigService {
     );
   }
 
-  updateTodo(): Observable<any> {
-    return this.http.get<Todo[]>(this.configUrl + '/todos');
+
+
+  /**
+   *
+   *
+   * @param {number} id
+   * @param {string} title
+   * @param {boolean} completed
+   * @param {boolean} editing
+   * @return {*}  {Observable<Todo>}
+   * @memberof ConfigService
+   */
+  updateTodo(id: number, title: string, completed: boolean, editing: boolean): Observable<Todo> {
+    return this.http.put<Todo>(`${this.configUrl}/todos/${id}`,
+      {
+        id,
+        title,
+        completed,
+        editing
+      }
+    );
   }
 
 

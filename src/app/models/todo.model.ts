@@ -4,7 +4,6 @@ export class Todo {
   public completed!: boolean;
   public editing!: boolean;
 
-
   constructor(model?: Partial<Todo>) {
     Object.assign(this, model || {});
   }

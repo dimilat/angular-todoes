@@ -11,98 +11,111 @@
       Create todo
     </button>
   </div>
+  <div
+    class="spinner-border text-secondary m-5"
+    role="status"
+    *ngIf="initLoading; else todosContent"
+  >
+    <span class="visually-hidden">Loading...</span>
+  </div>
 
-  <div class="list-group">
-    <a
-      *ngFor="let todo of todos"
-      class="list-group-item list-group-item-action"
-      aria-current="true"
-    >
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ todo.id }}</h5>
-        <small>
-          <i
-            *ngIf="!todo.completed; else uncompleted"
-            class="bi bi-check-circle-fill text-success"
-            >completed</i
-          >
-          <ng-template #uncompleted>
-            <i class="bi bi-circle text-secondary">not completed</i>
-          </ng-template>
-        </small>
-      </div>
-      <p class="mb-1">{{ todo.title }}</p>
-      <div class="d-flex">
-        <div class="me-auto">notes</div>
-        <div class="">
+  <ng-template #todosContent>
+    <div class="list-group">
+      <a
+        *ngFor="let todo of todos"
+        class="list-group-item list-group-item-action"
+        aria-current="true"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ todo.title }}</h5>
           <small>
-            <button type="button" class="btn btn-outline-primary btn-sm m-1">
-              Edit
-            </button>
-            <button
-              type="button ml-2"
-              class="btn btn-outline-danger btn-sm"
-              (click)="deleteTodo(todo.id)"
+            <i
+              *ngIf="todo.completed; else uncompleted"
+              class="bi bi-check-circle-fill text-success"
+              >completed</i
             >
-              Delete
-            </button>
+            <ng-template #uncompleted>
+              <i class="bi bi-circle text-secondary">not completed</i>
+            </ng-template>
           </small>
         </div>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="createModal"
-  #createModal
-  tabindex="-1"
-  aria-labelledby="createModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createModalLabel">Create new todo</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="todoFormControlTextarea" class="form-label"
-            >Todo description</label
-          >
-          <textarea
-            class="form-control"
-            id="todoFormControlTextarea"
-            [(ngModel)]="newTodo.title"
-            rows="3"
-          ></textarea>
+        <p class="mb-1">{{ todo.id }}</p>
+        <div class="d-flex">
+          <div class="me-auto">notes</div>
+          <div class="">
+            <small>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm m-1"
+                [disabled]="editLoading"
+              >
+                Edit
+              </button>
+              <button
+                type="button ml-2"
+                class="btn btn-outline-danger btn-sm"
+                (click)="deleteTodo(todo.id)"
+                [disabled]="deleteLoading"
+              >
+                Delete
+              </button>
+            </small>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-danger"
-          data-bs-dismiss="modal"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-          [disabled]="!newTodo?.title?.length"
-          (click)="createTodo()"
-        >
-          Create
-        </button>
+      </a>
+    </div>
+  </ng-template>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="createModal"
+    #createModal
+    tabindex="-1"
+    aria-labelledby="createModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel">Create new todo</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="todoFormControlTextarea" class="form-label"
+              >Todo description</label
+            >
+            <textarea
+              class="form-control"
+              id="todoFormControlTextarea"
+              [(ngModel)]="newTodo.title"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            [disabled]="!newTodo?.title?.length"
+            (click)="createTodo()"
+          >
+            Create
+          </button>
+        </div>
       </div>
     </div>
   </div>
