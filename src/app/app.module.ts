@@ -13,7 +13,7 @@ import { MainContentComponent } from './components/pages/main-content/main-conte
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    MainContentComponent
+    MainContentComponent,
   ],
   imports: [
     BrowserModule,

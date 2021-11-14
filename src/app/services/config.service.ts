@@ -70,7 +70,7 @@ export class ConfigService {
         id,
         title,
         completed,
-        editing
+        editing: editing
       }
     );
   }

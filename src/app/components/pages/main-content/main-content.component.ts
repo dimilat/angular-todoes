@@ -10,6 +10,7 @@ import { ConfigService } from 'src/app/services/config.service';
 })
 export class MainContentComponent implements OnInit {
   todos: Todo[] = [];
+  todosToShow: Todo[] = [];
   newTodo = new Todo;
   editedTodo = new Todo;
   config: any;
@@ -18,6 +19,9 @@ export class MainContentComponent implements OnInit {
   updateLoading = false;
   initLoading = false;
   editLoading = false;
+  pageNumber = 1;
+  searchText = '';
+  ITEMS_PER_PAGE = 3;
 
   constructor(private configService: ConfigService) { }
 
@@ -34,8 +38,10 @@ export class MainContentComponent implements OnInit {
     try {
       this.initLoading = true;
       await this.configService.getTodos()
-        .subscribe((data: Todo[]) =>
-          this.todos = data
+        .subscribe((data: Todo[]) => {
+          this.todos = data;
+          this.todosToShow = data;
+        }
         );
     } catch (error) {
       console.log(error, "[getTodos]")
@@ -87,14 +93,13 @@ export class MainContentComponent implements OnInit {
    *
    * @memberof MainContentComponent
    */
-  async editTodo() {
+  async editTodo(todo: Todo, completed = false, editing = true) {
     try {
       this.editLoading = true;
-      this.editedTodo.id = this.todos.length;
-      this.editedTodo.completed = false;
-      this.editedTodo.editing = false;
-      const todo = await this.configService.updateTodo(this.editedTodo.id, this.editedTodo.title, this.editedTodo.completed, this.newTodo.editing).toPromise();
-      this.todos.unshift(todo);
+      this.editedTodo = todo;
+      this.editedTodo.completed = completed;
+      this.editedTodo.editing = editing;
+      await this.configService.updateTodo(todo.id, this.editedTodo.title, this.editedTodo.completed, this.newTodo.editing).toPromise();
     } catch (error) {
       console.log(error, "[editTodo]")
     } finally {
@@ -111,4 +116,42 @@ export class MainContentComponent implements OnInit {
     var myModal = new bootstrap.Modal(<HTMLElement>document.getElementById("createModal"));
     myModal.show();
   }
+  /**
+   *
+   *
+   * @memberof MainContentComponent
+   */
+  openEditModal(): void {
+    var myModal = new bootstrap.Modal(<HTMLElement>document.getElementById("editModal"));
+    myModal.show();
+  }
+
+  /**
+   *
+   *
+   * @param {number} pageNumber
+   * @param {number} pageSize
+   * @return {*}
+   * @memberof MainContentComponent
+   */
+  fetchPage(pageNumber: number, pageSize: number) {
+    const initialPos = pageNumber * pageSize;
+    this.todosToShow = this.todos;
+    return this.todosToShow.slice(
+      initialPos,
+      initialPos + pageSize);
+  }
+
+
+  /**
+   *ß
+   *
+   * @memberof MainContentComponent
+   */
+  search() {
+    this.todosToShow = this.todosToShow.filter(e => e.title.includes(this.searchText));
+    console.log(this.todosToShow);
+    this.fetchPage(0, this.ITEMS_PER_PAGE);
+  }
+
 }
