@@ -136,7 +136,6 @@ export class MainContentComponent implements OnInit {
    */
   fetchPage(pageNumber: number, pageSize: number) {
     const initialPos = pageNumber * pageSize;
-    this.todosToShow = this.todos;
     return this.todosToShow.slice(
       initialPos,
       initialPos + pageSize);
@@ -144,13 +143,14 @@ export class MainContentComponent implements OnInit {
 
 
   /**
-   *ß
+   *
    *
    * @memberof MainContentComponent
    */
   search() {
-    this.todosToShow = this.todosToShow.filter(e => e.title.includes(this.searchText));
-    console.log(this.todosToShow);
+    this.todosToShow = this.todosToShow.filter(todo => todo.title.includes(this.searchText));
+    if (this.searchText === '')
+      this.todosToShow = this.todos;
     this.fetchPage(0, this.ITEMS_PER_PAGE);
   }
 
